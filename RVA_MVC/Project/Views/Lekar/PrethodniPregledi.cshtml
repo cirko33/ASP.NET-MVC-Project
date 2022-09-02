@@ -1,0 +1,23 @@
+﻿@using Classes;
+@{
+    ViewBag.Title = "Prethodni pregledi";
+}
+
+<h2>Prethodni pregledi</h2>
+<table>
+    <tr>
+        <th>Pacijent</th>
+        <th>Datum i vreme</th>
+        <th>Trajanje</th>
+        <th>Status</th>
+    </tr>
+    @foreach (Termin t in ViewBag.Pregledi)
+    {
+        <tr>
+            <td>@t.Pacijent.Ime @t.Pacijent.Prezime, @t.Pacijent.JMBG</td>
+            <td>@t.DatumIVreme.ToString("g")</td>
+            <td>@t.Trajanje min</td>
+            <td>@t.m_StatusCekanja.GetType().Name</td>
+        </tr>
+    }
+</table>

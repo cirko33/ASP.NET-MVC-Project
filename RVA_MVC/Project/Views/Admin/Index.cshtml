@@ -1,0 +1,68 @@
+﻿@using Classes;
+@{
+    ViewBag.Title = "Korisnici";
+}
+
+<br/>
+<div style="float:right">
+    <table>
+        <tr>
+            <th>Naziv</th>
+            <th>Broj lekara</th>
+            <th>Broj odeljenja</th>
+            <th>Vrsta bolnice</th>
+            <th>Detaljnije</th>
+        </tr>
+        @foreach (Bolnica b in ViewBag.Bolnice)
+        {
+            <tr>
+                <td>@b.Naziv</td>
+                <td>@b.BrojLekara</td>
+                <td>@b.BrojOdeljenja</td>
+                <td>@Enum.GetName(typeof(VrstaBolnice), b.Vrsta)</td>
+                <td>
+                    <form action="~/Admin/Bolnica">
+                        <input hidden value="@b.Id" name="id" />
+                        <input type="submit" value="Detalji" class="btn btn-primary"/>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<h2>Korisnici</h2>
+<br/>
+<table>
+    <tr>
+        <th>Ime</th>
+        <th>Prezime</th>
+        <th>Korisnicko ime</th>
+        <th>Tip</th>
+        <th>Detaljnije</th>
+    </tr>
+    @foreach(Korisnik k in ViewBag.Korisnici)
+    {
+        <tr>
+            <td>@k.Ime</td>
+            <td>@k.Prezime</td>
+            <td>@k.KorisnickoIme</td>
+            <td>@Enum.GetName(typeof(Tip), k.Tip)</td>
+            <td>
+                <form action="~/Admin/Korisnik" method="get">
+                    <input hidden value="@k.Id" name="id" />
+                    <input hidden value="@Enum.GetName(typeof(Tip), k.Tip)" name="tip"/>
+                    <input type="submit" value="Detalji" class="btn btn-primary" />
+                </form>
+            </td>
+        </tr>
+    }
+</table>
+<br/>
+<div>
+    <h3>Postavi obavestenje</h3>
+    <form action="~/Admin/Obavestenje" method="post">
+        <input name="tekst" class="form-control" placeholder="Tekst obavestenja" />
+        <br/>
+        <input type="submit" value="Posalji" class="btn btn-dark" />
+    </form>
+</div>

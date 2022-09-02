@@ -1,0 +1,60 @@
+﻿@using Classes;
+@{
+    ViewBag.Title = "Pocetna";
+}
+<br/>
+<div style="float:right">
+    @if (ViewBag.Obavestenja == null)
+    {
+        <button onclick="location.href = '/Lekar/UkljuciObavestenja'" class="btn btn-dark">Registruj se na obavestenja</button>
+    }
+    else
+    {
+        foreach (Obavestenje item in ViewBag.Obavestenja)
+        {
+            <table>
+                <tr>
+                    <th>OBAVESTENJE</th>
+                </tr>
+                <tr>
+                    <td>@item.Tekst</td>
+                </tr>
+                <tr>
+                    <td><button onclick="location.href='/Lekar/Procitano?id=@item.Id'" class="btn btn-primary">U redu</button></td>
+                </tr>
+            </table>
+            <br/>
+        }
+        <button onclick="location.href = '/Lekar/IskljuciObavestenja'" class="btn btn-dark">Odjavi se sa obavestenja</button>
+    }
+</div>
+<h3>Pregledi</h3>
+<table>
+    <tr>
+        <th>Pacijent</th>
+        <th>Datum i vreme</th>
+        <th>Trajanje</th>
+        <th>Status</th>
+        <th>Opcije</th>
+    </tr>
+    @foreach(Termin t in ViewBag.Pregledi)
+    {
+        <tr>
+            <td>@t.Pacijent.Ime @t.Pacijent.Prezime, @t.Pacijent.JMBG</td>
+            <td>@t.DatumIVreme.ToString("g")</td>
+            <td>@t.Trajanje min</td>
+            <td>@t.m_StatusCekanja.GetType().Name</td>
+            <td>
+                @if (t.m_StatusCekanja is Ceka)
+                {
+                    <button onclick="location.href='/Lekar/Odbij?id=@t.Id'" class="btn btn-danger">Odbij</button>
+                    <button onclick="location.href='/Lekar/Potvrdi?id=@t.Id'" class="btn btn-primary" @(ViewBag.ImaUToku ? "disabled" : "")>Potvrdi</button>
+                }
+                else
+                {
+                    <button onclick="location.href='/Lekar/Zavrsi?id=@t.Id'" class="btn btn-primary">Zavrsi</button>
+                }
+            </td>
+        </tr>
+    }
+</table>

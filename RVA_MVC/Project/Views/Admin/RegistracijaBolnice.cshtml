@@ -1,0 +1,21 @@
+﻿@using Classes;
+@{
+    ViewBag.Title = "RegistracijaBolnice";
+}
+
+<h2>Registracija Bolnice</h2>
+<form action="~/Admin/RegistrujBolnicu" method="post">
+    <input name="naziv" required class="form-control" placeholder="Naziv bolnice" />
+    <br />
+    <input name="BrojOdeljenja" required class="form-control" placeholder="Broj odeljenja" />
+    <br />
+    <select name="vrsta" class="form-select">
+        @foreach (var item in Enum.GetNames(typeof(VrstaBolnice)))
+        {
+            <option>@item</option>
+        }
+    </select>
+    <br />
+    <input type="submit" value="Registruj" class="btn btn-primary" />
+</form>
+

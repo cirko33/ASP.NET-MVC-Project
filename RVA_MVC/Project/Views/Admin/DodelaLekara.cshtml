@@ -1,0 +1,48 @@
+﻿@using Classes;
+@{
+    ViewBag.Title = "Dodela Lekara";
+}
+
+<h2>Dodela lekara</h2>
+<button @(ViewBag.Undo ? "" : "disabled") onclick="location.href='/Admin/Undo'" class="btn btn-dark">Undo</button>
+<button @(ViewBag.Redo ? "" : "disabled") onclick="location.href='/Admin/Redo'" class="btn btn-dark">Redo</button>
+<table>
+    <tr>
+        <th>Ime</th>
+        <th>Prezime</th>
+        <th>Korisnicko ime</th>
+        <th>Lekar</th>
+        <th>Opcije</th>
+    </tr>
+    @foreach(Pacijent p in ViewBag.Pacijenti)
+    {
+        <tr>
+            <td>@p.Ime</td>
+            <td>@p.Prezime</td>
+            <td>@p.KorisnickoIme</td>
+            <td>@(p.Lekar == null ? "Nije dodeljen" : $"{p.Lekar.Ime} {p.Lekar.Prezime}")</td>
+            <td>
+                @if (p.Lekar == null)
+                {
+                    <form action="~/Admin/SetLekar" method="post">
+                        <input hidden value="@p.Id" name="pacijentId" />
+                        <select name="lekarId" class="form-select">
+                            @foreach (Lekar l in ViewBag.Lekari)
+                            {
+                                <option value="@l.Id">@l.Ime @l.Prezime</option>
+                            }
+                        </select>
+                        <input type="submit" value="Dodeli" class="btn btn-primary" />
+                    </form>
+                }
+                else
+                {
+                    <form action="~/Admin/DeleteLekar" method="post">
+                        <input hidden value="@p.Id" name="pacijentId" />
+                        <input type="submit" value="Odjavi" class="btn btn-primary" />
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+</table>

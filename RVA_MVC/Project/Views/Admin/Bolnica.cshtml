@@ -1,0 +1,78 @@
+﻿@using Classes;
+
+@{
+    ViewBag.Title = "Bolnica";
+    var b = (Bolnica)ViewBag.Bolnica;
+}
+
+<h2>Bolnica</h2>
+<br/>
+<form action="~/Admin/IzmeniBolnicu" method="post">
+    <input hidden value="@b.Id" name="id"/>
+    <table>
+        <tr>
+            <th>Naziv</th>
+            <td>@b.Naziv</td>
+            <td><input name="naziv" required value="@b.Naziv" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th>Broj lekara</th>
+            <td>@b.BrojLekara</td>
+        </tr>
+        <tr>
+            <th>Broj odeljenja</th>
+            <td>@b.BrojOdeljenja</td>
+            <td><input name="BrojOdeljenja" required value="@b.BrojOdeljenja" class="form-control" /></td>
+        </tr>
+        <tr>
+            <th>Vrsta bolnice</th>
+            <td>@Enum.GetName(typeof(VrstaBolnice), b.Vrsta)</td>
+            <td>
+                <select name="vrsta" class="form-select">
+                    @foreach (var item in Enum.GetNames(typeof(VrstaBolnice)))
+                    {
+                        <option>@item</option>
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td align="center">
+                <input type="submit" value="Izmeni" class="btn btn-primary" style="width:80%"/>
+            </td>
+        </tr>
+    </table>
+</form>
+<br/>
+<div style="float:right">
+    <h3>Pacijenti</h3>
+    <table>
+        <tr>
+            <th>Ime</th>
+            <th>Prezime</th>
+        </tr>
+        @foreach (var item in b.m_Pacijent)
+        {
+            <tr>
+                <td>@item.Ime</td>
+                <td>@item.Prezime</td>
+            </tr>
+        }
+    </table>
+</div>
+<h3>Lekari</h3>
+<table>
+    <tr>
+        <th>Ime</th>
+        <th>Prezime</th>
+    </tr>
+    @foreach (var item in b.m_Lekar)
+    {
+        <tr>
+            <td>@item.Ime</td>
+            <td>@item.Prezime</td>
+        </tr>
+    }
+</table>

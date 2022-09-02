@@ -1,0 +1,47 @@
+﻿@using Classes; 
+@{
+    ViewBag.Title = "Registracija";
+}
+
+<h2>Registracija</h2>
+<form action="~/Auth/Registracija" method="post">
+    <input hidden name="tip" value="@ViewBag.Tip" />
+    <input required name="ime" class="form-control" placeholder="Ime" />
+    <br />
+    <input required name="prezime" class="form-control" placeholder="Prezime" />
+    <br />
+    <input required name="korisnickoIme" class="form-control" placeholder="KorisnickoIme" />
+    <br />
+    <input required name="lozinka" class="form-control" placeholder="Lozinka" />
+    <br />
+    @if (ViewBag.Tip == Tip.Pacijent)
+    {
+        <input required name="jmbg" class="form-control" placeholder="JMBG" pattern="[0-9]{13}" maxlength="13" />
+        <br />
+    }
+    else if (ViewBag.Tip == Tip.Lekar)
+    {
+        <select name="titula" class="form-select">
+            @foreach (var item in Enum.GetNames(typeof(Titula)))
+            {
+                <option>@item</option>
+            }
+        </select>
+        <br />
+        <select name="specijalizacija" class="form-select">
+            @foreach (var item in Enum.GetNames(typeof(Specijalizacija)))
+            {
+                <option>@item</option>
+            }
+        </select>
+        <br/>
+        <select name="bolnicaId" class="form-select">
+            @foreach (Bolnica item in ViewBag.Bolnice)
+            {
+                <option value="@item.Id">@item.Naziv</option>
+            }
+        </select>
+        <br />
+    }
+    <input type="submit" value="Registruj" class="btn btn-primary" />
+</form>

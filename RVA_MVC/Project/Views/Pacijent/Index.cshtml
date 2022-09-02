@@ -1,0 +1,67 @@
+﻿@using Classes;
+@{
+    ViewBag.Title = "Pocetna";
+}
+
+<br />
+<div style="float:right">
+    @if (ViewBag.Obavestenja == null)
+    {
+        <button onclick="location.href = '/Pacijent/UkljuciObavestenja'" class="btn btn-dark">Registruj se na obavestenja</button>
+    }
+    else
+    {
+        foreach (Obavestenje item in ViewBag.Obavestenja)
+        {
+            <table>
+                <tr>
+                    <th>OBAVESTENJE</th>
+                </tr>
+                <tr>
+                    <td>@item.Tekst</td>
+                </tr>
+                <tr>
+                    <td><button onclick="location.href='/Pacijent/Procitano?id=@item.Id'" class="btn btn-primary">U redu</button></td>
+                </tr>
+            </table>
+            <br />
+        }
+        <button onclick="location.href = '/Pacijent/IskljuciObavestenja'" class="btn btn-dark">Odjavi se sa obavestenja</button>
+    }
+</div>
+@if (ViewBag.MogucePrijaviti)
+{
+    <h3>Prijava za pregled</h3>
+    <form action="~/Pacijent/Zakazi" method="post">
+        <input type="date" class="form-control" name="datum" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+        <input type="time" class="form-control" name="vreme" min="08:00" max="20:00" />
+        <br />
+        <input type="submit" value="Prijavi se" />
+    </form>
+    <br />
+}
+else
+{
+    <h3>Potrazite pomoc kod administratora</h3>
+}
+@if (ViewBag.Pregledi.Count != 0)
+{
+    foreach (Termin p in ViewBag.Pregledi)
+    {
+        <h3>Pregledi</h3>
+        <table>
+            <tr>
+                <th>Lekar</th>
+                <th>Datum i vreme</th>
+                <th>Trajanje</th>
+                <th>Stanje</th>
+            </tr>
+            <tr>
+                <td>@p.Lekar.Ime @p.Lekar.Prezime</td>
+                <td>@p.DatumIVreme.ToString("g")</td>
+                <td>@p.Trajanje</td>
+                <td>@p.m_StatusCekanja.GetType().Name</td>
+            </tr>
+        </table>
+    }
+}

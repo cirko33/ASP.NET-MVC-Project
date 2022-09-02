@@ -1,0 +1,79 @@
+﻿@using Classes;
+@{
+    ViewBag.Title = "Korisnik";
+    var k = (Korisnik)ViewBag.Korisnik;
+}
+<br/>
+<form action="~/Admin/IzmeniKorisnika" method="post">
+    <input hidden value="@k.Id" name="id"/>
+    <table>
+        <tr>
+            <th>Ime</th>
+            <td>@k.Ime</td>
+            <td><input required name="Ime" value="@k.Ime" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th>Prezime</th>
+            <td>@k.Prezime</td>
+            <td><input required name="Prezime" value="@k.Prezime" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th>Korisnicko ime</th>
+            <td>@k.KorisnickoIme</td>
+            <td><input required name="KorisnickoIme" value="@k.KorisnickoIme" class="form-control"/></td>
+        </tr>
+        <tr>
+            <th>Lozinka</th>
+            <td>@k.Lozinka</td>
+            <td><input required name="Lozinka" value="@k.Lozinka" class="form-control" /></td>
+        </tr>
+        @if (k.Tip == Tip.Pacijent)
+        {
+            var p = (Pacijent)k;
+            <tr>
+                <th>JMBG</th>
+                <td>@p.JMBG</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Lekar</th>
+                <td>@(p.Lekar == null ? "Nije dodeljen" : $"{p.Lekar.Ime} {p.Lekar.Prezime}")</td>
+                <td></td>
+            </tr>
+        }
+        else if (k.Tip == Tip.Lekar)
+        {
+            var l = (Lekar)k;
+            <tr>
+                <th>Titula</th>
+                <td>@Enum.GetName(typeof(Titula), l.Titula)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Odeljenje</th>
+                <td>@Enum.GetName(typeof(Odeljenje), l.Odeljenje)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Specijalizacija</th>
+                <td>@Enum.GetName(typeof(Specijalizacija), l.Specijalizacija)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Bolnica</th>
+                <td>@l.m_Bolnica.Naziv</td>
+                <td></td>
+            </tr>
+        }
+        <tr>
+            <td></td>
+            <td></td>
+            <td align="center"><input type="submit" value="Izmeni" class="btn btn-primary" style="width:80%"/></td>
+        </tr>
+    </table>
+</form>
+<br/>
+<form action="~/Admin/DeleteKorisnik" method="post">
+    <input hidden value="@k.Id" name="id"/>
+    <input value="Obrisi" type="submit" class="btn btn-dark"/>
+</form>
