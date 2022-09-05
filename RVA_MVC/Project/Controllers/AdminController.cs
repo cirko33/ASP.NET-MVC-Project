@@ -28,6 +28,17 @@ namespace Project.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
+            var k = (Korisnik)Session["user"];
+            if (k.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {k.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             ViewBag.Korisnici = korisnikProvider.SviKorisnici().FindAll(t => t.KorisnickoIme != "admin");
             ViewBag.Bolnice = bolnicaProvider.SveBolnice();
             return View();
@@ -35,7 +46,17 @@ namespace Project.Controllers
 
         public ActionResult Korisnik(int id, Tip tip)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je pristupio detaljima korisnika sa id = {id}");
             switch (tip)
             {
@@ -57,7 +78,17 @@ namespace Project.Controllers
         [HttpPost]
         public ActionResult IzmeniKorisnika(Korisnik k)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je izmenio korisnika sa id = {k.Id}");
             var kor = korisnikProvider.DobaviKorisnika(k.Id);
             kor.Ime = k.Ime;
@@ -70,7 +101,17 @@ namespace Project.Controllers
 
         public ActionResult Bolnica(int id)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je pristupio detaljima bolnice sa id = {id}");
             ViewBag.Bolnica = bolnicaProvider.BolnicaSaID(id);
             return View();
@@ -79,7 +120,17 @@ namespace Project.Controllers
         [HttpPost]
         public ActionResult IzmeniBolnicu(Bolnica b)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je izmenio bolnicu sa id = {b.Id}");
             var bol = bolnicaProvider.BolnicaSaID(b.Id);
             bol.BrojOdeljenja = b.BrojOdeljenja;
@@ -91,8 +142,18 @@ namespace Project.Controllers
 
         public ActionResult Registracija(int tip)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             ViewBag.Tip = (tip == 0 ? Tip.Administrator : (tip == 1 ? Tip.Pacijent : Tip.Lekar));
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je pristupio registraciji {Enum.GetName(typeof(Tip), ViewBag.Tip)}a");
             if (ViewBag.Tip == Tip.Lekar)
                 ViewBag.Bolnice = bolnicaProvider.SveBolnice();
@@ -101,7 +162,17 @@ namespace Project.Controllers
 
         public ActionResult RegistracijaBolnice()
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je pristupio registraciji bolnice");
             return View();
         }
@@ -109,7 +180,17 @@ namespace Project.Controllers
         [HttpPost]
         public ActionResult RegistrujBolnicu(Bolnica bolnica)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je pristupio registrovao bolnicu sa nazivom {bolnica.Naziv}");
             bolnicaProvider.DodajBolnicu(bolnica);
             return RedirectToAction("Index");
@@ -117,7 +198,17 @@ namespace Project.Controllers
 
         public ActionResult DodelaLekara()
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je pristupio dodeli lekara");
             ViewBag.Pacijenti = pacijentProvider.Svi();
             ViewBag.Lekari = lekarProvider.Svi();
@@ -128,7 +219,17 @@ namespace Project.Controllers
 
         public ActionResult Undo()
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je pozvao undo");
             dodelaProvider.Undo();
             return RedirectToAction("DodelaLekara");
@@ -136,7 +237,17 @@ namespace Project.Controllers
 
         public ActionResult Redo()
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je pozvao redo");
             dodelaProvider.Redo();
             return RedirectToAction("DodelaLekara");
@@ -145,7 +256,17 @@ namespace Project.Controllers
         [HttpPost]
         public ActionResult SetLekar(int pacijentId, int lekarId)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je dodelio lekara korisniku sa id = {pacijentId}");
             dodelaProvider.Dodeli(pacijentProvider.Dobavi(pacijentId), lekarProvider.Dobavi(lekarId));
             return RedirectToAction("DodelaLekara");
@@ -153,7 +274,17 @@ namespace Project.Controllers
         [HttpPost]
         public ActionResult DeleteLekar(int pacijentId)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var user = (Korisnik)Session["user"];
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {user.KorisnickoIme} je odjavio lekara korisniku sa id = {pacijentId}");
             dodelaProvider.Odjavi(pacijentProvider.Dobavi(pacijentId));
             return RedirectToAction("DodelaLekara");
@@ -162,9 +293,19 @@ namespace Project.Controllers
         [HttpPost]
         public ActionResult DeleteKorisnik(int id)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var k = korisnikProvider.DobaviKorisnika(id);
             var user = (Korisnik)Session["user"];
-            if(k.KorisnickoIme == "admin")
+            if (user.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {user.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
+            if (k.KorisnickoIme == "admin")
             {
                 logger.LogError($"Korisnik {user.KorisnickoIme} je pokusao da obrise admin profil");
                 return RedirectToAction("Index");
@@ -195,7 +336,17 @@ namespace Project.Controllers
         [HttpPost]
         public ActionResult Obavestenje(string tekst)
         {
+            if (Session["user"] == null)
+            {
+                logger.LogWarn($"Korisnik je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Index", "Home");
+            }
             var k = (Korisnik)Session["user"];
+            if (k.Tip != Tip.Administrator)
+            {
+                logger.LogWarn($"Korisnik {k.KorisnickoIme} je pokusao da udje na stranicu sa admin pravima");
+                return RedirectToAction("Error", "Home");
+            }
             logger.LogInfo($"Korisnik {k.KorisnickoIme} je poslao obavestenje sa tekstom \"{tekst}\"");
             ((ConcreteSubject)subject).Tekst = tekst;
             subject.NotifyObservers();

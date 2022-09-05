@@ -35,8 +35,7 @@ create table if not exists Pacijent(
 	jmbg varchar(13) not null,
     id int not null,
     lekarId int not null default -1,
-    foreign key (id) references Korisnik(id),
-    foreign key (lekarId) references Korisnik(id)
+    foreign key (id) references Korisnik(id)
 );
 
 create table if not exists LekarBolnica(

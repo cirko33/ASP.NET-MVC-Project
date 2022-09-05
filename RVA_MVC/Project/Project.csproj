@@ -291,6 +291,7 @@
     <Content Include="Views\Admin\RegistracijaBolnice.cshtml" />
     <Content Include="Views\Admin\DodelaLekara.cshtml" />
     <Content Include="Views\Lekar\PrethodniPregledi.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
